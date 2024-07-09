@@ -74,12 +74,15 @@ StartScript:
     Gui, Submit, NoHide ; 获取复选框状态
     isRunning := true
     if (tree) {
+        Gosub, treeEvent
         SetTimer, treeEvent, 300000
     }
     if (stole) {
+        Gosub, stoleEvent
         SetTimer, stoleEvent, 30000
     }
     if (auto) {
+        Gosub, autoClickEvent
         SetTimer, autoClickEvent , 3000
     }
     
