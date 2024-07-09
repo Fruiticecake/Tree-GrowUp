@@ -39,7 +39,8 @@ Gui, Add, Text, x10 y80 w200 h20 vWindowPID, 进程 PID: (无)
 Gui, Add, Button, x220 y20 w100 h30 gStartScript, 开启功能
 Gui, Add, Button, x220 y70 w100 h30 gStopScript, 停止功能
 Gui, Add, CheckBox, x10 y120 vTree, 仙树加速
-Gui, Add, CheckBox, x140 y120 vStole, 自动偷桃
+Gui, Add, CheckBox, x120 y120 vStole, 自动偷桃
+Gui, Add, CheckBox, x250 y120 vAuto, 自动领玉
 Gui, Show, w330 h160, Tree GrowUp
 
 
@@ -73,10 +74,13 @@ StartScript:
     Gui, Submit, NoHide ; 获取复选框状态
     isRunning := true
     if (tree) {
-        SetTimer, treeEvent, 300000 ; 每5分钟执行一次
+        SetTimer, treeEvent, 300000
     }
     if (stole) {
-        SetTimer, stoleEvent, 3000 ; 每5分钟执行一次
+        SetTimer, stoleEvent, 30000
+    }
+    if (auto) {
+        SetTimer, autoClickEvent , 3000
     }
     
 Return
@@ -87,6 +91,30 @@ StopScript:
 Return
 
 stoleEvent:
+
+Return
+
+autoClickEvent:
+
+    if hwnd
+    {
+        ;100 928 #211909  107 932
+        WinGetPos, X, Y, Width, Height, ahk_id %hwnd%
+        ; 获取指定坐标的像素颜色
+        CoordMode, Pixel, Screen
+        PixelSearch, Px, Py, X + 100, Y + 928, X + 107, Y + 932, 0x211909, 3, Fast RGB
+        if !ErrorLevel
+        {
+            SetControlDelay -1
+            Sleep, 5000 
+            ControlClick, x345 y900, ahk_id %hwnd% NA
+            Sleep, 5000 
+            ControlClick, x345 y900, ahk_id %hwnd% NA
+            Sleep, 3000 
+            ControlClick, x345 y900, ahk_id %hwnd% NA
+        }    
+
+    }
 
 Return
 
